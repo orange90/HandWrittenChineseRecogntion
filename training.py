@@ -6,10 +6,18 @@ from keras.datasets import mnist
 from sklearn.metrics import accuracy_score
 
 # from kerlayers import Conv2D, MaxPooling2D, ZeroPadding2D, GlobalAveragePooling2D
-from tensorflow.contrib.keras.python.keras.layers import Conv2D, MaxPooling2D, ZeroPadding2D, GlobalAveragePooling2D, Dropout, Activation, Flatten, Dense
-from tensorflow.contrib.keras.python.keras.layers.normalization import BatchNormalization
-from tensorflow.contrib.keras.api.keras.models import Sequential
-from tensorflow.contrib.keras.python.keras.utils import np_utils
+if tf.__version__ == '1.2.0':
+    from tensorflow.contrib.keras.python.keras.layers import Conv2D, MaxPooling2D, ZeroPadding2D, GlobalAveragePooling2D, Dropout, Activation, Flatten, Dense
+    from tensorflow.contrib.keras.python.keras.layers.normalization import BatchNormalization
+    from tensorflow.contrib.keras.api.keras.models import Sequential
+    from tensorflow.contrib.keras.python.keras.utils import np_utils
+else:
+    from tensorflow.keras.python.keras.layers import Conv2D, MaxPooling2D, ZeroPadding2D, \
+        GlobalAveragePooling2D, Dropout, Activation, Flatten, Dense
+    from tensorflow.keras.python.keras.layers.normalization import BatchNormalization
+    from tensorflow.keras.api.keras.models import Sequential
+    from tensorflow.keras.python.keras.utils import np_utils
+
 
 # from fast_read_data import ChineseWrittenChars
 #
