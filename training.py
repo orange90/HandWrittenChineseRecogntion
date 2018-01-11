@@ -12,11 +12,11 @@ if tf.__version__ == '1.2.0':
     from tensorflow.contrib.keras.api.keras.models import Sequential
     from tensorflow.contrib.keras.python.keras.utils import np_utils
 else:
-    from tensorflow.keras.layers import Conv2D, MaxPooling2D, ZeroPadding2D, \
+    from tf.keras.layers import Conv2D, MaxPooling2D, ZeroPadding2D, \
         GlobalAveragePooling2D, Dropout, Activation, Flatten, Dense
-    from tensorflow.keras.layers.normalization import BatchNormalization
-    from tensorflow.keras.models import Sequential
-    from tensorflow.keras.utils import np_utils
+    from tf.keras.layers.normalization import BatchNormalization
+    from tf.keras.models import Sequential
+    from tf.keras.utils import np_utils
 
 
 # from fast_read_data import ChineseWrittenChars
