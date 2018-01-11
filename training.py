@@ -1,7 +1,7 @@
 # from read_data import *
 import tensorflow as tf
-from tensorflow.contrib.keras.python.keras.preprocessing import image
-from tensorflow.contrib.keras.python.keras.applications.vgg16 import VGG16
+# from tensorflow.contrib.keras.python.keras.preprocessing import image
+# from tensorflow.contrib.keras.python.keras.applications.vgg16 import VGG16
 from keras.datasets import mnist
 from sklearn.metrics import accuracy_score
 
