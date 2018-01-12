@@ -64,7 +64,7 @@ def training(X_train,y_train):
     model = build_model()
     model.compile(optimizer='adam', loss='categorical_crossentropy')
     model.summary()
-    model.fit(X_train, y_train, epochs=10)
+    model.fit(X_train, y_train, epochs=5) # the more epoch the better
     model.save('model.h5')
 
 

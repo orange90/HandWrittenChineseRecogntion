@@ -59,13 +59,13 @@ class DataSet:
     #todo: to unittest
     def load_next_file(self):
         for x_s,y_s in self.read_one_gnt_file():
-            with tf.Session() as sess:
-                result_x = []
-                result_y = []
-                for i in range(len(x_s)):
-                    result = self.read_convert_image(x_s[i])
-                    result_x.append(result)
-                    result_y.append(y_s[i])
+            # with tf.Session() as sess:
+            result_x = []
+            result_y = []
+            for i in range(len(x_s)):
+                result = self.read_convert_image(x_s[i])
+                result_x.append(result)
+                result_y.append(y_s[i])
             x = np.array(result_x)
             y = np.array(result_y)
             self.file_counter += 1
