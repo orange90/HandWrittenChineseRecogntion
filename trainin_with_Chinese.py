@@ -1,8 +1,6 @@
 # from read_data import *
 import tensorflow as tf
 import time
-# from keras.datasets import mnist
-from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import LabelBinarizer
 
 
@@ -10,15 +8,11 @@ from sklearn.preprocessing import LabelBinarizer
 if tf.__version__ == '1.2.0':
     from tensorflow.contrib.keras.python.keras.layers import Conv2D, MaxPooling2D, ZeroPadding2D, GlobalAveragePooling2D, Dropout, Activation, Flatten, Dense
     from tensorflow.contrib.keras.python.keras.layers.normalization import BatchNormalization
-    # from keras.models import Sequential
     from tensorflow.contrib.keras.api.keras.models import Sequential
-    from tensorflow.contrib.keras.python.keras.utils import np_utils
 else:
-    from keras.layers import Conv2D, MaxPooling2D, ZeroPadding2D, \
-        GlobalAveragePooling2D, Dropout, Activation, Flatten, Dense
+    from keras.layers import Conv2D, MaxPooling2D, Dropout, Activation, Flatten, Dense
     from keras.layers.normalization import BatchNormalization
     from keras.models import Sequential
-    from keras.utils import np_utils
 
 
 from fast_read_data import ChineseWrittenChars
@@ -65,19 +59,27 @@ def build_model():
 
 def training(X_train,y_train):
     model = build_model()
-    model.compile(optimizer='adam', loss='categorical_crossentropy')
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
     model.summary()
     model.fit(X_train, y_train, epochs=2) # the more epoch the better
     model.save('model.h5')
+
+    # ---
+    # X_test, y_test = chars.test.load_all()
+    # y_test = lb.transform(y_test)
+    # X_test /= 255
+    # score = model.evaluate(X_test, y_test)
+    # print('Model accuracy: ', score)
+
 
 
 def inference(X_test, y_test):
     # load model
     from keras.models import load_model
     model = load_model('model.h5')
-    model.compile(optimizer='adam',loss='categorical_crossentropy')
+    model.compile(optimizer='adam',loss='categorical_crossentropy', metrics=['accuracy'])
     loaded_model_score = model.evaluate(X_test, y_test)
-    print('Test accuracy: ', loaded_model_score)
+    print('test accuracy: ',loaded_model_score[1]) # the 0-th element is loss, the 1st element is accuracy
 
 
 def app(train_or_test):
@@ -95,8 +97,8 @@ def app(train_or_test):
         X_test, y_test = chars.test.load_all()
         y_test = lb.transform(y_test)
         X_test /= 255
-        inference(X_test, y_test)
+        inference(X_test[:1000], y_test[:1000])
 
-app('train')
-# app('test')
+# app('train')
+app('test')
 
