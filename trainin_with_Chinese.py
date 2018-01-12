@@ -24,6 +24,9 @@ else:
 from fast_read_data import ChineseWrittenChars
 
 chars = ChineseWrittenChars()
+chars.test.use_rotation = False
+chars.test.use_filter = False
+
 lb = LabelBinarizer()
 lb.fit(chars.generate_char_list())
 number_of_classes = 3755
