@@ -5,6 +5,8 @@ from sklearn.utils import shuffle
 import numpy as np
 import struct
 from PIL import Image
+from PIL import ImageFilter
+
 import pickle
 import time
 
@@ -17,6 +19,8 @@ class DataSet:
         self.iter_index = 0
         self.path = path
         self.char_dict = char_dict
+        self.use_filter = True
+        self.use_rotation = True
 
     def one_file(self, f):
         header_size = 10
@@ -56,7 +60,6 @@ class DataSet:
                         y.append(tagcode)
                 yield x, y
 
-    #todo: to unittest
     def load_next_file(self):
         for x_s,y_s in self.read_one_gnt_file():
             # with tf.Session() as sess:
@@ -66,6 +69,14 @@ class DataSet:
                 result = self.read_convert_image(x_s[i])
                 result_x.append(result)
                 result_y.append(y_s[i])
+                if self.use_filter:
+                    filtered_x = self.apply_filter(x_s[i])
+                    result_x.append(filtered_x)
+                    result_y.append(y_s[i])
+                if self.use_rotation:
+                    rotated_x = self.rotate(x_s[i])
+                    result_x.append(rotated_x)
+                    result_y.append(y_s[i])
             x = np.array(result_x)
             y = np.array(result_y)
             self.file_counter += 1
@@ -81,21 +92,33 @@ class DataSet:
             y.extend(temp_y)
         return np.array(x), np.array(y)
 
+    def rotate(self, image):
+        im = Image.fromarray(image)
+        im.rotate(random.randint(10,20)) # rotate slightly and randomly
+        im = im.resize([64, 64])
+        new_image = np.asarray(im)
+        new_image = new_image.reshape(new_image.shape[0], new_image.shape[1], 1)
+        return new_image
+
+    def apply_filter(self,image):
+        im = Image.fromarray(image)
+        filters = [ImageFilter.BLUR, ImageFilter.CONTOUR, ImageFilter.EMBOSS]
+        im.filter(random.choice(filters))
+        im = im.resize([64, 64])
+        new_image = np.asarray(im)
+        new_image = new_image.reshape(new_image.shape[0], new_image.shape[1], 1)
+        return new_image
 
     def read_convert_image(self, image):
         im = Image.fromarray(image)
         im = im.resize([64,64])
         new_image = np.asarray(im)
         new_image = new_image.reshape(new_image.shape[0], new_image.shape[1], 1)
-        # print type(new_image)
-        # im.show()
-        # image_tensor = tf.image.convert_image_dtype(image, tf.float32)
-        # new_size = tf.constant([64, 64], dtype=tf.int32)
-        # new_image = tf.image.resize_images(image_tensor, new_size)
         return new_image
 
 
 class ChineseWrittenChars:
+
     def __init__(self):
         self.train = DataSet('HWDB1.1trn_gnt',is_train=True)
 
