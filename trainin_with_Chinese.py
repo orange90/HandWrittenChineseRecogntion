@@ -47,10 +47,10 @@ def build_model():
     model.add(Flatten())
 
     # Fully connected layer
-    model.add(Dense(256))
+    model.add(Dense(512))
     model.add(BatchNormalization())
     model.add(Activation('relu'))
-    model.add(Dropout(0.2))
+    model.add(Dropout(0.3))
     model.add(Dense(3755))
 
     model.add(Activation('softmax'))
@@ -80,6 +80,7 @@ def inference(X_test, y_test):
     model.compile(optimizer='adam',loss='categorical_crossentropy', metrics=['accuracy'])
     loaded_model_score = model.evaluate(X_test, y_test)
     print('test accuracy: ',loaded_model_score[1]) # the 0-th element is loss, the 1st element is accuracy
+    print(model.metrics)
 
 
 def app(train_or_test):
