@@ -34,7 +34,6 @@ class DataSet:
         image_names = []
         label_list = []
         for root, sub_folder, file_list in os.walk(data_dir):
-            # print root, sub_folder, file_list
             try:
                 test_num = int(root[-5:])
             except:
@@ -72,9 +71,6 @@ class DataSet:
             for i in range(batch_size):
                 index = self.iter_index + i
                 oper = self.read_convert_image(self.files[index])
-                # result = sess.run(oper)
-                # if flatten:
-                #     result = result.flatten
                 x.append(oper)
                 y.append(self.labels[index])
             x = sess.run(x)
@@ -106,12 +102,3 @@ class ChineseWrittenChars:
         self.train = DataSet('data/train/')
         self.test = DataSet('data/test/')
         print 'inited datasets successfully'
-#
-# loader = ChineseWrittenChars()
-# import time
-# start_time = time.time()
-# result,y = loader.train.load_next_batch(batch_size=10)
-# print time.time()-start_time
-# print result,y
-# result,y = loader.train.load_next_batch(batch_size=10)
-# print result,y
