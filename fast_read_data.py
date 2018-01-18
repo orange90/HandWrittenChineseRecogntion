@@ -1,18 +1,13 @@
 import os
-import tensorflow as tf
 import random
-from sklearn.utils import shuffle
 import numpy as np
 import struct
 from PIL import Image
 from PIL import ImageFilter
-
 import pickle
-import time
 
 
 class DataSet:
-
     def __init__(self, path, is_train=True, char_dict=None):
         self.file_counter = 0
         self.is_train = is_train
@@ -62,7 +57,6 @@ class DataSet:
 
     def load_next_file(self):
         for x_s,y_s in self.read_one_gnt_file():
-            # with tf.Session() as sess:
             result_x = []
             result_y = []
             for i in range(len(x_s)):
@@ -80,14 +74,13 @@ class DataSet:
             x = np.array(result_x)
             y = np.array(result_y)
             self.file_counter += 1
-            print ('loaded files count',self.file_counter)
+            print ('loaded files count', self.file_counter)
             yield x, y
 
     def load_all(self):
-        all_size = len(os.listdir(self.path))
         x = []
         y = []
-        for temp_x,temp_y in self.load_next_file():
+        for temp_x, temp_y in self.load_next_file():
             x.extend(temp_x)
             y.extend(temp_y)
         return np.array(x), np.array(y)
@@ -118,13 +111,9 @@ class DataSet:
 
 
 class ChineseWrittenChars:
-
     def __init__(self):
         self.train = DataSet('HWDB1.1trn_gnt',is_train=True)
-
-        # self.char_dict = self.generate_char_dict()
         print('--------create char_dict successfully------------')
-
         self.test = DataSet('HWDB1.1tst_gnt',is_train=False)
         print 'inited datasets successfully'
 
@@ -142,12 +131,4 @@ class ChineseWrittenChars:
                 pickle.dump(char_list,f)
             return char_list
 
-#
-# loader = ChineseWrittenChars()
-# import time
-# start_time = time.time()
-# result,y = loader.train.load_next_batch(batch_size=10)
-# print time.time()-start_time
-# print result,y
-# result,y = loader.train.load_next_batch(batch_size=10)
-# print result,y
+

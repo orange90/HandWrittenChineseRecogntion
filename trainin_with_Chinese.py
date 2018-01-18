@@ -1,20 +1,8 @@
-# from read_data import *
-import tensorflow as tf
 import time
 from sklearn.preprocessing import LabelBinarizer
-
-
-# from kerlayers import Conv2D, MaxPooling2D, ZeroPadding2D, GlobalAveragePooling2D
-if tf.__version__ == '1.2.0':
-    from tensorflow.contrib.keras.python.keras.layers import Conv2D, MaxPooling2D, ZeroPadding2D, GlobalAveragePooling2D, Dropout, Activation, Flatten, Dense
-    from tensorflow.contrib.keras.python.keras.layers.normalization import BatchNormalization
-    from tensorflow.contrib.keras.api.keras.models import Sequential
-else:
-    from keras.layers import Conv2D, MaxPooling2D, Dropout, Activation, Flatten, Dense
-    from keras.layers.normalization import BatchNormalization
-    from keras.models import Sequential
-
-
+from keras.layers import Conv2D, MaxPooling2D, Dropout, Activation, Flatten, Dense
+from keras.layers.normalization import BatchNormalization
+from keras.models import Sequential
 from fast_read_data import ChineseWrittenChars
 
 chars = ChineseWrittenChars()
@@ -51,7 +39,7 @@ def build_model():
     model.add(BatchNormalization())
     model.add(Activation('relu'))
     model.add(Dropout(0.3))
-    model.add(Dense(3755))
+    model.add(Dense(number_of_classes))
 
     model.add(Activation('softmax'))
     return model
@@ -64,16 +52,8 @@ def training(X_train,y_train):
     model.fit(X_train, y_train, epochs=2) # the more epoch the better
     model.save('model.h5')
 
-    # ---
-    # X_test, y_test = chars.test.load_all()
-    # y_test = lb.transform(y_test)
-    # X_test /= 255
-    # score = model.evaluate(X_test, y_test)
-    # print('Model accuracy: ', score)
 
-
-
-def inference(X_test, y_test):
+def testing(X_test, y_test):
     # load model
     from keras.models import load_model
     model = load_model('model.h5')
@@ -98,8 +78,7 @@ def app(train_or_test):
         X_test, y_test = chars.test.load_all()
         y_test = lb.transform(y_test)
         X_test /= 255
-        inference(X_test[:1000], y_test[:1000])
+        testing(X_test, y_test)
 
-# app('train')
-app('test')
+t
 
