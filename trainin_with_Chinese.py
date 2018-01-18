@@ -16,10 +16,10 @@ number_of_classes = 3755
 def build_model():
     model = Sequential()
 
-    model.add(Conv2D(64, (3, 3), input_shape=(64, 64, 1)))
+    model.add(Conv2D(128, (3, 3), input_shape=(64, 64, 1)))
     model.add(BatchNormalization(axis=-1))
     model.add(Activation('relu'))
-    model.add(Conv2D(32, (3, 3)))
+    model.add(Conv2D(64, (3, 3)))
     model.add(BatchNormalization(axis=-1))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
@@ -35,11 +35,11 @@ def build_model():
     model.add(Flatten())
 
     # Fully connected layer
-    model.add(Dense(512))
+    model.add(Dense(1024))
     model.add(BatchNormalization())
     model.add(Activation('relu'))
-    model.add(Dropout(0.3))
-    model.add(Dense(number_of_classes))
+    model.add(Dropout(0.4))
+    model.add(Dense(3755))
 
     model.add(Activation('softmax'))
     return model
@@ -49,7 +49,7 @@ def training(X_train,y_train):
     model = build_model()
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
     model.summary()
-    model.fit(X_train, y_train, epochs=2) # the more epoch the better
+    model.fit(X_train, y_train, epochs=12) # the more epoch the better
     model.save('model.h5')
 
 
