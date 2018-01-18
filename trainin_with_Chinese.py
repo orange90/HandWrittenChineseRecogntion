@@ -80,5 +80,5 @@ def app(train_or_test):
         X_test /= 255
         testing(X_test, y_test)
 
-t
+
 
